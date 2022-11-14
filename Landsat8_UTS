@@ -1,0 +1,26 @@
+/**** Start of imports. If edited, may not auto-convert in the playground. ****/
+var geometry = /* color: #d63000 */ee.Geometry.MultiPoint(
+        [[107.6306828793907, -6.922407572586013],
+         [107.6306828793907, -6.922407572586013]]);
+/***** End of imports. If edited, may not auto-convert in the playground. *****/
+var point = ee.Geometry.Point([-122.292, 37.9018]);
+
+var l8 = ee.ImageCollection('LANDSAT/LC08/C01/T1_TOA');
+
+var image = ee.Image(
+  l8.filterBounds(point)
+    .filterDate('2022-11-14', '2022-12-31')
+    .sort('CLOUD_COVER')
+    .first()
+);
+
+var dataset = ee.ImageCollection('LANDSAT/LC08/C02/T1')
+                  .filterBounds(geometry)
+                  .filterDate('2022-11-14', '2022-12-31');
+var trueColor432 = dataset.select(['B4', 'B3', 'B2']);
+var trueColor432Vis = {
+  min: 0.0,
+  max: 30000.0,
+};
+Map.setCenter(107.63058631986617 ,-6.922428873837269, 17);
+Map.addLayer(trueColor432, trueColor432Vis, 'True Color (432)');
